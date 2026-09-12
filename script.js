@@ -1,11 +1,11 @@
 /* =========================================================
-   EIGEN — JavaScript Site Builder (with LibGen & Blob Download)
+   EIGEN — Working JavaScript (Updated Resource Panel)
    ========================================================= */
 
 (function () {
   "use strict";
 
-  // 1. Inject the page HTML (Includes the new Nigerian resources & LibGen source card)
+  // 1. Inject the page HTML
   document.getElementById("app").innerHTML = `
     <div class="bg" aria-hidden="true">
       <div class="glow glow-1"></div>
@@ -25,10 +25,10 @@
         <h1>📚 Eigen</h1>
         <p class="tagline">Free books for students — Nigerian textbooks, past questions, and global classics.</p>
         <form id="search-form" class="search-bar">
-          <input id="search-input" type="text" placeholder="Search by title, author, subject, or course code…" autocomplete="off" required />
+          <input id="search-input" type="text" placeholder="Search by title, author, or subject…" autocomplete="off" required />
           <button type="submit">Search</button>
         </form>
-        <p class="hint">Try: "Things Fall Apart", "GST201", "Clean Code", or "Jane Austen"</p>
+        <p class="hint">Try: "Things Fall Apart", "GST201", or "Jane Austen"</p>
       </div>
     </header>
 
@@ -37,60 +37,76 @@
       <section id="results" class="results"></section>
 
       <section class="ng-resources">
-        <h2>🇳🇬 Nigerian & Global Sources</h2>
-        <p class="ng-intro">Direct links to trusted educational resources. Search results are fetched from Open Library, Gutenberg, and LibGen.</p>
+        <h2>📚 More Free Book Sources</h2>
+        <p class="ng-intro">Direct links to trusted free book libraries and Nigerian educational resources.</p>
         <div class="ng-grid">
           <a class="ng-card" href="https://nou.edu.ng/courseware/" target="_blank" rel="noopener">
-            <span class="ng-tag">University</span>
+            <span class="ng-tag">Nigeria</span>
             <h3>NOUN e-Courseware</h3>
             <p>Full university course materials — GST, Sciences, Arts, Management. PDF downloads.</p>
+          </a>
+          <a class="ng-card" href="http://www.oer.unn.edu.ng/" target="_blank" rel="noopener">
+            <span class="ng-tag">Nigeria</span>
+            <h3>UNN Open Educational Resources</h3>
+            <p>Over 22,000 free and open educational resources from the University of Nigeria, Nsukka.</p>
           </a>
           <a class="ng-card" href="https://flashlearners.com/" target="_blank" rel="noopener">
             <span class="ng-tag">Exams</span>
             <h3>Flash Learners</h3>
             <p>WAEC, JAMB, NECO, and BECE past questions, notes, and study guides.</p>
           </a>
-          <a class="ng-card" href="https://www.africanstorybook.org/" target="_blank" rel="noopener">
-            <span class="ng-tag">Primary</span>
-            <h3>African Storybook</h3>
-            <p>Free picture storybooks in Yoruba, Igbo, Hausa, and other African languages.</p>
+          <a class="ng-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
+            <span class="ng-tag">Classics</span>
+            <h3>Project Gutenberg</h3>
+            <p>75,000+ public domain books — free EPUB, PDF, and Kindle downloads.</p>
           </a>
-          <a class="ng-card" href="https://lagoshope.org/" target="_blank" rel="noopener">
-            <span class="ng-tag">Primary / JSS</span>
-            <h3>Lagos HOPE e-Learning</h3>
-            <p>Free textbooks for Primary 1–6 and Junior Secondary students, by Lagos State.</p>
+          <a class="ng-card" href="https://openlibrary.org/" target="_blank" rel="noopener">
+            <span class="ng-tag">Library</span>
+            <h3>Open Library</h3>
+            <p>Millions of books. Read or borrow free from the Internet Archive.</p>
           </a>
-          <a class="ng-card" href="https://freebooks.helioho.st/" target="_blank" rel="noopener">
-            <span class="ng-tag">LibGen API</span>
-            <h3>Library Genesis Search</h3>
-            <p>Search millions of academic books and textbooks via the free Helioho API wrapper.</p>
+          <a class="ng-card" href="https://archive.org/details/texts" target="_blank" rel="noopener">
+            <span class="ng-tag">Archive</span>
+            <h3>Internet Archive</h3>
+            <p>Millions of free digitized texts, books, and historical documents.</p>
+          </a>
+          <a class="ng-card" href="https://manybooks.net/" target="_blank" rel="noopener">
+            <span class="ng-tag">E-Books</span>
+            <h3>ManyBooks</h3>
+            <p>Over 50,000 free e-books across every genre, in EPUB, PDF, and Kindle formats.</p>
+          </a>
+          <a class="ng-card" href="https://www.pdfdrive.com/" target="_blank" rel="noopener">
+            <span class="ng-tag">PDF Search</span>
+            <h3>PDF Drive</h3>
+            <p>A search engine for finding PDF files. The closest experience to OceanofPDF, but use with caution.</p>
+          </a>
+          <a class="ng-card" href="https://www.nap.edu/" target="_blank" rel="noopener">
+            <span class="ng-tag">Academic</span>
+            <h3>National Academies Press</h3>
+            <p>Free downloads of PDFs in education, science, medicine, and engineering.</p>
           </a>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p>Built with <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>, <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>, <a href="https://freebooks.helioho.st/" target="_blank" rel="noopener">LibGen API</a>, and Nigerian educational sources.</p>
+      <p>Built with <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a> and <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>. All books are free and legal to read.</p>
     </footer>
   `;
 
-  // 2. Inject the CSS (Same as before + Blob Download Styles)
+  // 2. Inject the CSS (unchanged from your working version)
   const style = document.createElement("style");
   style.textContent = `
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0a0c18; color: #f4f5ff; line-height: 1.55; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
     #app { display: contents; }
-
-    /* Background */
     .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 20% 10%, #171b38 0%, transparent 55%), radial-gradient(ellipse at 80% 90%, #1b1233 0%, transparent 55%), linear-gradient(180deg, #080a16 0%, #0a0c18 100%); }
     .glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.55; animation: floatGlow 18s ease-in-out infinite; }
     .glow-1 { width: 45vw; height: 45vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, #4a63ff, transparent 70%); top: -12%; left: -10%; }
     .glow-2 { width: 40vw; height: 40vw; max-width: 460px; max-height: 460px; background: radial-gradient(circle, #a05cff, transparent 70%); bottom: -15%; right: -10%; animation-delay: -6s; }
     .glow-3 { width: 30vw; height: 30vw; max-width: 340px; max-height: 340px; background: radial-gradient(circle, #2ec5ff, transparent 70%); top: 45%; left: 55%; animation-delay: -12s; opacity: 0.35; }
     @keyframes floatGlow { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-40px) scale(1.08); } }
-
-    /* Book */
     .book { position: absolute; top: 50%; left: 50%; width: 220px; height: 300px; transform: translate(-50%,-50%) rotateX(12deg) rotateY(-18deg); transform-style: preserve-3d; perspective: 1400px; animation: bookFloat 8s ease-in-out infinite; opacity: 0.55; }
     .book-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: bookSway 12s ease-in-out infinite; }
     .book .page { position: absolute; top: 4%; height: 92%; width: 48%; background: linear-gradient(135deg, #f6f7ff 0%, #dfe3ff 100%); border-radius: 3px 8px 8px 3px; box-shadow: inset -6px 0 14px rgba(0,0,0,0.08), 0 10px 30px rgba(0,0,0,0.5); backface-visibility: hidden; }
@@ -101,22 +117,16 @@
     @keyframes bookSway { 0%, 100% { transform: rotateZ(0deg); } 50% { transform: rotateZ(-4deg); } }
     @keyframes flipLeft { 0%, 60%, 100% { transform: rotateY(0deg); } 75% { transform: rotateY(-22deg); } }
     @keyframes flipRight { 0%, 60%, 100% { transform: rotateY(0deg); } 75% { transform: rotateY(22deg); } }
-
-    /* Layout */
     .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; position: relative; z-index: 1; }
     .hero { padding: 4.5rem 0 3rem; text-align: center; }
     .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.6rem; background: linear-gradient(135deg, #fff 0%, #9db1ff 60%, #b58cff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 6px 30px rgba(124,156,255,0.35)); }
     .tagline { color: #a6adcf; margin-bottom: 2.25rem; font-size: clamp(0.95rem, 2.4vw, 1.1rem); }
-
-    /* Search */
     .search-bar { display: flex; gap: 0.6rem; max-width: 640px; margin: 0 auto; background: rgba(255,255,255,0.04); border: 1px solid rgba(124,156,255,0.18); border-radius: 16px; padding: 0.5rem; backdrop-filter: blur(14px); box-shadow: 0 20px 50px rgba(0,0,0,0.55); }
     .search-bar input { flex: 1; min-width: 0; padding: 0.85rem 1rem; font-size: 1rem; border-radius: 12px; border: none; background: transparent; color: #f4f5ff; outline: none; }
     .search-bar button { padding: 0.85rem 1.5rem; font-size: 0.98rem; font-weight: 700; border: none; border-radius: 12px; background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%); color: white; cursor: pointer; transition: transform 0.15s, filter 0.2s; box-shadow: 0 8px 24px rgba(124,156,255,0.35); white-space: nowrap; }
     .search-bar button:hover { transform: translateY(-1px); filter: brightness(1.1); }
     .hint { margin-top: 1rem; font-size: 0.88rem; color: #a6adcf; opacity: 0.85; }
     .status { text-align: center; padding: 1.5rem 0; color: #a6adcf; min-height: 1rem; }
-
-    /* Results */
     .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.35rem; padding-bottom: 3rem; }
     .card { background: rgba(26,30,51,0.72); border: 1px solid rgba(124,156,255,0.18); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(14px); box-shadow: 0 10px 30px rgba(0,0,0,0.35); transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; }
     .card:hover { transform: translateY(-6px); border-color: rgba(124,156,255,0.55); box-shadow: 0 20px 45px rgba(60,80,200,0.35); }
@@ -130,8 +140,6 @@
     .card a, .card button { flex: 1 1 auto; min-width: 84px; text-align: center; padding: 0.55rem 0.6rem; font-size: 0.82rem; font-weight: 700; border-radius: 10px; text-decoration: none; background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%); color: white; white-space: nowrap; box-shadow: 0 6px 16px rgba(124,156,255,0.28); border: none; cursor: pointer; }
     .card button.secondary { background: transparent; border: 1px solid rgba(124,156,255,0.18); color: #f4f5ff; box-shadow: none; }
     .card button.secondary:hover { border-color: #7c9cff; background: rgba(124,156,255,0.08); }
-
-    /* Nigerian Resources */
     .ng-resources { margin: 2rem 0 3rem; padding: 2rem 0 0; border-top: 1px solid rgba(124,156,255,0.18); }
     .ng-resources h2 { font-size: clamp(1.3rem, 3.5vw, 1.75rem); font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff 0%, #9db1ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .ng-intro { color: #a6adcf; margin-bottom: 1.75rem; font-size: 0.95rem; }
@@ -144,16 +152,7 @@
     .footer { margin-top: auto; padding: 1.5rem 0; text-align: center; font-size: 0.85rem; color: #a6adcf; border-top: 1px solid rgba(124,156,255,0.18); backdrop-filter: blur(10px); }
     .footer a { color: #7c9cff; text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
-
-    /* Mobile */
-    @media (max-width: 640px) {
-      .hero { padding: 3rem 0 2rem; }
-      .search-bar { flex-direction: column; padding: 0.6rem; }
-      .search-bar button { width: 100%; }
-      .results { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-      .ng-grid { grid-template-columns: 1fr; }
-      .book { width: 170px; height: 240px; opacity: 0.42; }
-    }
+    @media (max-width: 640px) { .hero { padding: 3rem 0 2rem; } .search-bar { flex-direction: column; padding: 0.6rem; } .search-bar button { width: 100%; } .results { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; } .ng-grid { grid-template-columns: 1fr; } .book { width: 170px; height: 240px; opacity: 0.42; } }
     @media (prefers-reduced-motion: reduce) { .book, .book-inner, .book .page, .glow { animation: none !important; } }
   `;
   document.head.appendChild(style);
@@ -176,17 +175,14 @@
     results.innerHTML = "";
 
     try {
-      // Parallel fetching from all three sources
-      const [ol, gut, libgen] = await Promise.allSettled([
+      const [ol, gut] = await Promise.allSettled([
         fetchOpenLibrary(query),
         fetchGutenberg(query),
-        fetchLibGen(query)
       ]);
 
       const merged = dedupe([
         ...(gut.status === "fulfilled" ? gut.value : []),
-        ...(libgen.status === "fulfilled" ? libgen.value : []),
-        ...(ol.status === "fulfilled" ? ol.value : [])
+        ...(ol.status === "fulfilled" ? ol.value : []),
       ]);
 
       if (merged.length === 0) {
@@ -237,39 +233,6 @@
     });
   }
 
-  // NEW: Fetch from the LibGen API Wrapper (Helioho)
-  async function fetchLibGen(query) {
-    try {
-      // Using the free API wrapper for Library Genesis
-      const res = await fetch(`https://freebooks.helioho.st/api/search_book?title=${encodeURIComponent(query)}`);
-      if (!res.ok) return [];
-      const data = await res.json();
-      
-      // Handle different response structures from the API
-      const books = Array.isArray(data) ? data : (data.books || data.data || []);
-      
-      return books.slice(0, 15).map((book) => {
-        // Construct a read URL if possible, or fallback to search
-        const readUrl = book.download_link || `https://libgen.is/search.php?req=${encodeURIComponent(book.title || query)}`;
-        const coverUrl = book.cover || null;
-        
-        return {
-          title: book.title || "Untitled",
-          author: book.author || "Unknown author",
-          year: book.year || "",
-          cover: coverUrl,
-          readUrl: readUrl, // Points to file or libgen page
-          source: "LibGen",
-          downloadUrl: book.download_link || null, // Direct link for the blob download
-          downloadLabel: book.extension ? `Download ${book.extension.toUpperCase()}` : "Download File"
-        };
-      });
-    } catch (e) {
-      console.warn("LibGen fetch failed", e);
-      return [];
-    }
-  }
-
   function dedupe(books) {
     const seen = new Set();
     return books.filter((b) => {
@@ -281,17 +244,14 @@
   }
 
   function renderBooks(books) {
-    results.innerHTML = books.map((book, index) => {
+    results.innerHTML = books.map((book) => {
       const coverHtml = book.cover ? `<img src="${book.cover}" alt="${escapeHtml(book.title)}" loading="lazy" onerror="this.parentElement.textContent='📖'" />` : "📖";
       
-      let actionButtons = `<a href="${book.readUrl}" target="_blank" rel="noopener">Read / View</a>`;
+      let actionButtons = `<a href="${book.readUrl}" target="_blank" rel="noopener">Read Free</a>`;
       
       if (book.downloadUrl) {
-        // Add the download button with an onclick handler
-        actionButtons += `<button class="secondary" onclick="downloadBook('${book.downloadUrl}', '${escapeHtml(book.title)}')">${book.downloadLabel}</button>`;
-      } else if (book.downloadLabel) {
-        // Fallback for Gutenberg direct links (no blob needed usually, but consistent)
-        actionButtons = `<a href="${book.downloadUrl}" download class="secondary" target="_blank" rel="noopener">${book.downloadLabel}</a>` + actionButtons;
+        // For Gutenberg, use a direct link. The browser will handle the download.
+        actionButtons += `<a href="${book.downloadUrl}" download class="secondary" target="_blank" rel="noopener">${book.downloadLabel}</a>`;
       }
 
       return `
@@ -309,51 +269,6 @@
       `;
     }).join("");
   }
-
-  // 4. Global Download Function (Blob method)
-  window.downloadBook = async function(url, title) {
-    if (!url) return;
-    const originalStatus = status.textContent;
-    status.textContent = `Downloading "${title}"…`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Network response was not ok");
-      
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      // Clean filename: remove invalid chars and add extension if missing
-      let filename = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      // Try to get extension from URL or blob type
-      const ext = url.split('.').pop().split(/(?=[?#])/)[0]; 
-      if (ext && ext.length < 5) {
-        filename += `.${ext}`;
-      } else if (blob.type) {
-        const typeExt = blob.type.split('/').pop();
-        if (typeExt) filename += `.${typeExt}`;
-      } else {
-        filename += ".pdf"; // Default fallback
-      }
-
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-      
-      status.textContent = `Download started for "${title}"`;
-      setTimeout(() => { status.textContent = originalStatus; }, 3000);
-    } catch (error) {
-      console.error("Download failed:", error);
-      status.textContent = "Download failed. Opening link instead…";
-      // Fallback: Open in new tab
-      window.open(url, '_blank');
-      setTimeout(() => { status.textContent = originalStatus; }, 3000);
-    }
-  };
 
   function escapeHtml(str) {
     return String(str)
