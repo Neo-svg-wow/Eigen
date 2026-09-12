@@ -1,5 +1,5 @@
 /* =========================================================
-   EIGEN — All formats (PDF, EPUB, Kindle, TXT, HTML) + filter
+   EIGEN — Full JavaScript with PDF Drive shortcut
    ========================================================= */
 
 (function () {
@@ -49,8 +49,8 @@
       <section id="results" class="results"></section>
 
       <section class="ng-resources">
-        <h2>🇳🇬 Nigerian & Global Sources</h2>
-        <p class="ng-intro">Trusted free educational resources. All free to access.</p>
+        <h2>🌍 More Free Book Sources</h2>
+        <p class="ng-intro">Direct links to trusted free book libraries. All free to browse.</p>
         <div class="ng-grid">
           <a class="ng-card" href="https://nou.edu.ng/courseware/" target="_blank" rel="noopener">
             <span class="ng-tag">University</span>
@@ -82,6 +82,16 @@
             <h3>Open Library</h3>
             <p>Millions of books. Read or borrow free from the Internet Archive.</p>
           </a>
+          <a class="ng-card" href="https://www.pdfdrive.com/" target="_blank" rel="noopener">
+            <span class="ng-tag">PDF Search</span>
+            <h3>PDF Drive</h3>
+            <p>Search millions of PDF files. Opens in a new tab — you search there directly.</p>
+          </a>
+          <a class="ng-card" href="https://archive.org/details/texts" target="_blank" rel="noopener">
+            <span class="ng-tag">Archive</span>
+            <h3>Internet Archive</h3>
+            <p>Millions of free digitized texts, books, and historical documents.</p>
+          </a>
         </div>
       </section>
     </main>
@@ -89,7 +99,7 @@
     <footer class="footer">
       <p>Built with <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>,
       <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>,
-      and Nigerian educational sources. All books are free and legal to read.</p>
+      and Nigerian educational sources.</p>
     </footer>
   `;
 
@@ -206,6 +216,32 @@
     .search-bar button:hover { transform: translateY(-1px); filter: brightness(1.1); }
     .hint { margin-top: 1rem; font-size: 0.88rem; color: #a6adcf; opacity: 0.85; }
 
+    /* PDF Drive shortcut bar */
+    .pd-shortcut {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 0.75rem; margin: 1rem auto 0.5rem;
+      padding: 0.85rem 1rem;
+      max-width: 720px;
+      background: rgba(124,156,255,0.06);
+      border: 1px dashed rgba(124,156,255,0.35);
+      border-radius: 14px;
+      animation: pdFade 0.4s ease;
+    }
+    @keyframes pdFade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    .pd-text { font-size: 0.88rem; color: #c8cff0; }
+    .pd-text strong { color: #fff; }
+    .pd-btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem; font-weight: 800;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%);
+      color: #fff; text-decoration: none; white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(124,156,255,0.35);
+      transition: transform 0.15s, filter 0.2s;
+    }
+    .pd-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
     /* Format filter bar */
     .filter-bar {
       display: flex; flex-wrap: wrap; align-items: center;
@@ -226,14 +262,10 @@
       color: #c8cff0; cursor: pointer;
       transition: all 0.18s ease;
     }
-    .filter-chip:hover {
-      border-color: rgba(124,156,255,0.55);
-      color: #fff;
-    }
+    .filter-chip:hover { border-color: rgba(124,156,255,0.55); color: #fff; }
     .filter-chip.active {
       background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%);
-      border-color: transparent;
-      color: white;
+      border-color: transparent; color: white;
       box-shadow: 0 6px 18px rgba(124,156,255,0.4);
     }
 
@@ -284,8 +316,6 @@
       font-size: 0.78rem; color: #7c84b0; margin-bottom: 0.7rem;
       text-transform: uppercase; letter-spacing: 0.04em;
     }
-
-    /* Format badges + action buttons */
     .card .formats {
       display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.7rem;
     }
@@ -375,6 +405,7 @@
       .hero { padding: 3rem 0 2rem; }
       .search-bar { flex-direction: column; padding: 0.6rem; }
       .search-bar button { width: 100%; }
+      .pd-shortcut { flex-direction: column; text-align: center; }
       .filter-bar { padding: 0.5rem 0 1rem; }
       .filter-label { width: 100%; text-align: center; margin-bottom: 0.25rem; }
       .results { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
@@ -394,8 +425,8 @@
   const status = document.getElementById("status");
   const filterBar = document.getElementById("filter-bar");
 
-  let allBooks = [];          // full result set
-  let activeFormat = "all";   // current filter
+  let allBooks = [];
+  let activeFormat = "all";
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -409,10 +440,9 @@
   filterBar.addEventListener("click", (e) => {
     const chip = e.target.closest(".filter-chip");
     if (!chip) return;
-    const fmt = chip.dataset.format;
-    activeFormat = fmt;
-    setActiveChip(fmt);
-    renderBooks(allBooks); // re-render with filter
+    activeFormat = chip.dataset.format;
+    setActiveChip(activeFormat);
+    renderBooks(allBooks);
   });
 
   function setActiveChip(fmt) {
@@ -426,6 +456,7 @@
     status.textContent = `Searching for "${query}"…`;
     results.innerHTML = "";
     filterBar.hidden = true;
+    removePdShortcut();
     allBooks = [];
 
     try {
@@ -440,7 +471,8 @@
       ]);
 
       if (merged.length === 0) {
-        status.textContent = `No free books found for "${query}". Try another search or browse the Nigerian resources below.`;
+        status.textContent = `No free books found for "${query}" here. Try PDF Drive below for more results.`;
+        showPdShortcut(query);
         return;
       }
 
@@ -448,13 +480,36 @@
       filterBar.hidden = false;
       status.textContent = `Found ${merged.length} free book${merged.length === 1 ? "" : "s"} for "${query}"`;
       renderBooks(allBooks);
+      showPdShortcut(query); // always offer PDF Drive as an extra source
     } catch (err) {
       console.error(err);
       status.textContent = "Something went wrong. Please try again.";
     }
   }
 
-  /* ---------- 5. Sources ---------- */
+  /* ---------- 5. PDF Drive shortcut ---------- */
+  function showPdShortcut(query) {
+    removePdShortcut();
+    const bar = document.createElement("div");
+    bar.className = "pd-shortcut";
+    bar.id = "pd-shortcut";
+    bar.innerHTML = `
+      <span class="pd-text">Not finding it? Try <strong>PDF Drive</strong> for millions more PDFs:</span>
+      <a class="pd-btn"
+         href="https://www.pdfdrive.com/search?q=${encodeURIComponent(query)}"
+         target="_blank" rel="noopener">
+        Search PDF Drive →
+      </a>
+    `;
+    status.parentElement.insertBefore(bar, status.nextSibling);
+  }
+
+  function removePdShortcut() {
+    const el = document.getElementById("pd-shortcut");
+    if (el) el.remove();
+  }
+
+  /* ---------- 6. Sources ---------- */
   async function fetchOpenLibrary(query) {
     const res = await fetch(
       `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=24`
@@ -470,7 +525,7 @@
         : null,
       readUrl: `https://openlibrary.org${doc.key}`,
       source: "Open Library",
-      downloads: [], // Open Library books are borrow-only
+      downloads: [],
     }));
   }
 
@@ -485,15 +540,12 @@
       const f = book.formats || {};
       const downloads = [];
 
-      // PDF
       if (f["application/pdf"]) {
         downloads.push({ url: f["application/pdf"], label: "PDF", type: "PDF" });
       }
-      // EPUB
       if (f["application/epub+zip"]) {
         downloads.push({ url: f["application/epub+zip"], label: "EPUB", type: "EPUB" });
       }
-      // Kindle (MOBI)
       if (f["application/x-mobipocket-ebook"]) {
         downloads.push({
           url: f["application/x-mobipocket-ebook"],
@@ -501,12 +553,10 @@
           type: "Kindle",
         });
       }
-      // Plain text
       const txt = f["text/plain; charset=utf-8"] || f["text/plain"];
       if (txt) {
         downloads.push({ url: txt, label: "TXT", type: "TXT" });
       }
-      // HTML
       const html =
         f["text/html; charset=utf-8"] ||
         f["text/html; charset=iso-8859-1"] ||
@@ -527,7 +577,7 @@
     });
   }
 
-  /* ---------- 6. Helpers ---------- */
+  /* ---------- 7. Helpers ---------- */
   function dedupe(books) {
     const seen = new Set();
     return books.filter((b) => {
@@ -566,12 +616,10 @@
               onerror="this.parentElement.textContent='📖'" />`
           : "📖";
 
-        // Format badges
         const badges = (book.downloads || [])
           .map((d) => `<span class="fmt-badge">${d.type}</span>`)
           .join("");
 
-        // Download buttons
         const downloadButtons = (book.downloads || [])
           .map(
             (d) =>
