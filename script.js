@@ -15,6 +15,7 @@ async function searchBooks(query) {
   results.innerHTML = "";
 
   try {
+    // Fire both APIs at the same time for speed
     const [openLibrary, gutenberg] = await Promise.all([
       fetchOpenLibrary(query),
       fetchGutenberg(query),
@@ -23,7 +24,7 @@ async function searchBooks(query) {
     const merged = dedupe([...gutenberg, ...openLibrary]);
 
     if (merged.length === 0) {
-      status.textContent = `No free books found for "${query}". Try another search.`;
+      status.textContent = `No free books found for "${query}". Try another search, or browse the Nigerian resources below.`;
       return;
     }
 
@@ -55,7 +56,7 @@ async function fetchOpenLibrary(query) {
       : null,
     readUrl: `https://openlibrary.org${doc.key}`,
     source: "Open Library",
-    downloadUrl: null, // Open Library books usually need to be borrowed
+    downloadUrl: null,
   }));
 }
 
@@ -68,11 +69,8 @@ async function fetchGutenberg(query) {
 
   return (data.results || []).slice(0, 24).map((book) => {
     const author =
-      book.authors && book.authors[0]
-        ? book.authors[0].name
-        : "Unknown author";
+      book.authors && book.authors[0] ? book.authors[0].name : "Unknown author";
 
-    // Pick the best downloadable format
     const formats = book.formats || {};
     const downloadUrl =
       formats["application/epub+zip"] ||
@@ -122,7 +120,6 @@ function renderBooks(books) {
           )}" loading="lazy" onerror="this.parentElement.textContent='📖'" />`
         : "📖";
 
-      // Build buttons: Read (always) + Download (only when available)
       const downloadBtn =
         book.downloadUrl && book.downloadLabel
           ? `<a href="${book.downloadUrl}" download class="secondary" target="_blank" rel="noopener">${book.downloadLabel}</a>`
