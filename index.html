@@ -3,117 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eigen — Find Free Books for Students</title>
-  <meta
-    name="description"
-    content="Eigen helps students find free books — including Nigerian textbooks, past questions, and public domain classics."
-  />
-  <link rel="stylesheet" href="./style.css" />
+  <title>Eigen — Get Free Books</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(ellipse at top, #171b38 0%, #0a0c18 60%);
+      color: #f4f5ff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .wrap { width: 100%; max-width: 520px; text-align: center; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #9db1ff, #b58cff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.4rem;
+    }
+    p.tag { color: #a6adcf; margin-bottom: 2rem; }
+    .bar {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(124,156,255,0.18);
+      border-radius: 16px;
+      padding: 0.5rem;
+      backdrop-filter: blur(14px);
+    }
+    input {
+      flex: 1; min-width: 0;
+      padding: 0.9rem 1rem;
+      background: transparent;
+      border: none; outline: none;
+      color: #f4f5ff; font-size: 1rem;
+    }
+    input::placeholder { color: #7a80a8; }
+    button {
+      padding: 0.9rem 1.5rem;
+      border: none; border-radius: 12px;
+      background: linear-gradient(135deg, #7c9cff, #b58cff);
+      color: #fff; font-weight: 700; font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(124,156,255,0.35);
+      transition: transform 0.15s, filter 0.2s;
+      white-space: nowrap;
+    }
+    button:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .status { margin-top: 1.5rem; color: #a6adcf; min-height: 1.2rem; font-size: 0.92rem; }
+    .result {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: rgba(26,30,51,0.72);
+      border: 1px solid rgba(124,156,255,0.18);
+      border-radius: 14px;
+      backdrop-filter: blur(14px);
+      display: none;
+    }
+    .result.show { display: block; }
+    .result h3 { margin-bottom: 0.35rem; font-size: 1.05rem; }
+    .result .by { color: #a6adcf; font-size: 0.88rem; margin-bottom: 1rem; }
+    .result a {
+      display: inline-block;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #7c9cff, #b58cff);
+      color: #fff; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(124,156,255,0.3);
+    }
+    .result a:hover { filter: brightness(1.1); }
+  </style>
 </head>
 <body>
-  <!-- Animated premium book background -->
-  <div class="bg-scene" aria-hidden="true">
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
-    <div class="glow glow-3"></div>
+  <div class="wrap">
+    <h1>📚 Eigen</h1>
+    <p class="tag">Type a book title. Get it free.</p>
 
-    <div class="book">
-      <div class="book-inner">
-        <div class="page page-left"></div>
-        <div class="page page-right"></div>
-        <div class="cover"></div>
-      </div>
-    </div>
+    <form id="form" class="bar">
+      <input id="q" type="text" placeholder="e.g. Moby Dick" autocomplete="off" required />
+      <button type="submit">Get book</button>
+    </form>
 
-    <div class="floating-pages">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
+    <div id="status" class="status"></div>
+    <div id="result" class="result"></div>
   </div>
 
-  <header class="hero">
-    <div class="container">
-      <h1>📚 Eigen</h1>
-      <p class="tagline">Free books for students — Nigerian textbooks, past questions, and classics.</p>
+  <script>
+    const form = document.getElementById("form");
+    const qInput = document.getElementById("q");
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
 
-      <form id="search-form" class="search-bar">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search by title, author, subject, or course code…"
-          autocomplete="off"
-          required
-        />
-        <button type="submit">Search</button>
-      </form>
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const query = qInput.value.trim();
+      if (!query) return;
 
-      <p class="hint">
-        Try: "Things Fall Apart", "GST201", "WAEC Physics", or "Jane Austen"
-      </p>
-    </div>
-  </header>
+      status.textContent = `Looking for "${query}"…`;
+      result.classList.remove("show");
 
-  <main class="container">
-    <div id="status" class="status"></div>
+      try {
+        // Gutendex — free, no key, no account, real PDFs and EPUBs
+        const res = await fetch(
+          `https://gutendex.com/books?search=${encodeURIComponent(query)}`
+        );
+        const data = await res.json();
 
-    <!-- Search results -->
-    <section id="results" class="results"></section>
+        if (!data.results || data.results.length === 0) {
+          status.textContent = `No free public-domain book found for "${query}".`;
+          return;
+        }
 
-    <!-- Nigerian Resources panel -->
-    <section id="ng-resources" class="ng-resources">
-      <h2>🇳🇬 Nigerian Textbook Sources</h2>
-      <p class="ng-intro">
-        Direct links to trusted Nigerian educational resources. All free to access.
-      </p>
+        const book = data.results[0];
+        const formats = book.formats || {};
 
-      <div class="ng-grid">
-        <a class="ng-card" href="https://nou.edu.ng/courseware/" target="_blank" rel="noopener">
-          <span class="ng-tag">University</span>
-          <h3>NOUN e-Courseware</h3>
-          <p>Full university course materials — GST, Sciences, Arts, Management. PDF downloads.</p>
-        </a>
+        // Prefer actual PDF, then EPUB, then plain text
+        const pdf = formats["application/pdf"];
+        const epub = formats["application/epub+zip"];
+        const txt = formats["text/plain; charset=utf-8"] || formats["text/plain"];
+        const link = pdf || epub || txt;
+        const label = pdf ? "Download PDF" : epub ? "Download EPUB" : "Download TXT";
 
-        <a class="ng-card" href="https://www.nvit.edu.ng/" target="_blank" rel="noopener">
-          <span class="ng-tag">Library</span>
-          <h3>National Virtual Library</h3>
-          <p>Curated Nigerian textbooks, theses, and academic papers aligned to the curriculum.</p>
-        </a>
+        if (!link) {
+          status.textContent = "This book has no downloadable file.";
+          return;
+        }
 
-        <a class="ng-card" href="https://flashlearners.com/" target="_blank" rel="noopener">
-          <span class="ng-tag">Exams</span>
-          <h3>Flash Learners</h3>
-          <p>WAEC, JAMB, NECO, and BECE past questions, notes, and study guides.</p>
-        </a>
+        status.textContent = "";
+        result.innerHTML = `
+          <h3>${escapeHtml(book.title)}</h3>
+          <p class="by">${escapeHtml(book.authors?.[0]?.name || "Unknown author")}</p>
+          <a href="${link}" download target="_blank" rel="noopener">${label}</a>
+        `;
+        result.classList.add("show");
+      } catch (err) {
+        console.error(err);
+        status.textContent = "Something went wrong. Try again.";
+      }
+    });
 
-        <a class="ng-card" href="https://www.africanstorybook.org/" target="_blank" rel="noopener">
-          <span class="ng-tag">Primary</span>
-          <h3>African Storybook</h3>
-          <p>Free picture storybooks in Yoruba, Igbo, Hausa, and other African languages.</p>
-        </a>
-
-        <a class="ng-card" href="https://lagoshope.org/" target="_blank" rel="noopener">
-          <span class="ng-tag">Primary / JSS</span>
-          <h3>Lagos HOPE e-Learning</h3>
-          <p>Free textbooks for Primary 1–6 and Junior Secondary students, by Lagos State.</p>
-        </a>
-
-        <a class="ng-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
-          <span class="ng-tag">Classics</span>
-          <h3>Project Gutenberg</h3>
-          <p>75,000+ public domain books — free EPUB, PDF, and Kindle downloads.</p>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p>
-      Built with
-      <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>,
-      <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>,
-      and Nigerian educational sources. All books are free and legal to read.
-    </p>
-  </footer>
-
-  <script src="./script.js"></script>
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
