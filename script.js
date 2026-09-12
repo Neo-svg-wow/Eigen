@@ -20,7 +20,6 @@ async function searchBooks(query) {
       fetchGutenberg(query),
     ]);
 
-    // Merge, dedupe by title + author
     const merged = dedupe([...gutenberg, ...openLibrary]);
 
     if (merged.length === 0) {
@@ -38,6 +37,7 @@ async function searchBooks(query) {
   }
 }
 
+/* ---------- Open Library ---------- */
 async function fetchOpenLibrary(query) {
   const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(
     query
@@ -46,21 +46,20 @@ async function fetchOpenLibrary(query) {
   if (!res.ok) return [];
   const data = await res.json();
 
-  return (data.docs || []).map((doc) => {
-    const key = doc.key; // e.g. /works/OL123W
-    return {
-      title: doc.title || "Untitled",
-      author: (doc.author_name && doc.author_name[0]) || "Unknown author",
-      year: doc.first_publish_year || "",
-      cover: doc.cover_i
-        ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-        : null,
-      readUrl: `https://openlibrary.org${key}`,
-      source: "Open Library",
-    };
-  });
+  return (data.docs || []).map((doc) => ({
+    title: doc.title || "Untitled",
+    author: (doc.author_name && doc.author_name[0]) || "Unknown author",
+    year: doc.first_publish_year || "",
+    cover: doc.cover_i
+      ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+      : null,
+    readUrl: `https://openlibrary.org${doc.key}`,
+    source: "Open Library",
+    downloadUrl: null, // Open Library books usually need to be borrowed
+  }));
 }
 
+/* ---------- Project Gutenberg ---------- */
 async function fetchGutenberg(query) {
   const url = `https://gutendex.com/books?search=${encodeURIComponent(query)}`;
   const res = await fetch(url);
@@ -69,21 +68,41 @@ async function fetchGutenberg(query) {
 
   return (data.results || []).slice(0, 24).map((book) => {
     const author =
-      book.authors && book.authors[0] ? book.authors[0].name : "Unknown author";
+      book.authors && book.authors[0]
+        ? book.authors[0].name
+        : "Unknown author";
+
+    // Pick the best downloadable format
+    const formats = book.formats || {};
+    const downloadUrl =
+      formats["application/epub+zip"] ||
+      formats["application/x-mobipocket-ebook"] ||
+      formats["text/plain; charset=utf-8"] ||
+      formats["text/plain"] ||
+      null;
+
+    const downloadLabel = formats["application/epub+zip"]
+      ? "Download EPUB"
+      : formats["application/x-mobipocket-ebook"]
+      ? "Download MOBI"
+      : downloadUrl
+      ? "Download TXT"
+      : null;
+
     return {
       title: book.title || "Untitled",
       author,
       year: "",
-      cover:
-        book.formats && book.formats["image/jpeg"]
-          ? book.formats["image/jpeg"]
-          : null,
+      cover: formats["image/jpeg"] || null,
       readUrl: `https://www.gutenberg.org/ebooks/${book.id}`,
       source: "Gutenberg",
+      downloadUrl,
+      downloadLabel,
     };
   });
 }
 
+/* ---------- Helpers ---------- */
 function dedupe(books) {
   const seen = new Set();
   return books.filter((b) => {
@@ -103,6 +122,12 @@ function renderBooks(books) {
           )}" loading="lazy" onerror="this.parentElement.textContent='📖'" />`
         : "📖";
 
+      // Build buttons: Read (always) + Download (only when available)
+      const downloadBtn =
+        book.downloadUrl && book.downloadLabel
+          ? `<a href="${book.downloadUrl}" download class="secondary" target="_blank" rel="noopener">${book.downloadLabel}</a>`
+          : "";
+
       return `
         <article class="card">
           <div class="cover">${coverHtml}</div>
@@ -114,6 +139,7 @@ function renderBooks(books) {
       }</p>
             <div class="actions">
               <a href="${book.readUrl}" target="_blank" rel="noopener">Read free</a>
+              ${downloadBtn}
             </div>
           </div>
         </article>
