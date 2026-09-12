@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eigen — Find Free Books for Students</title>
+  <meta name="description" content="Eigen is an educational website that supports and encourages easy access to free books for students.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>📚 Eigen</h1>
+      <p class="tagline">Search millions of free books. Read them anywhere.</p>
+
+      <form id="search-form" class="search-bar">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search by title, author, or subject…"
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      <p class="hint">
+        Try: "Things Fall Apart", "Jane Austen", or "African history"
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="status" class="status"></div>
+    <section id="results" class="results"></section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Built with
+      <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>
+      and
+      <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>.
+      All books are free and legal to read.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
