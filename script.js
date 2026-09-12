@@ -1,11 +1,10 @@
 /* =========================================================
-   EIGEN — Working JavaScript (Updated Resource Panel)
+   EIGEN — JavaScript with Internet Archive Search
    ========================================================= */
 
 (function () {
   "use strict";
 
-  // 1. Inject the page HTML
   document.getElementById("app").innerHTML = `
     <div class="bg" aria-hidden="true">
       <div class="glow glow-1"></div>
@@ -38,7 +37,7 @@
 
       <section class="ng-resources">
         <h2>📚 More Free Book Sources</h2>
-        <p class="ng-intro">Direct links to trusted free book libraries and Nigerian educational resources.</p>
+        <p class="ng-intro">Direct links to trusted free book libraries.</p>
         <div class="ng-grid">
           <a class="ng-card" href="https://nou.edu.ng/courseware/" target="_blank" rel="noopener">
             <span class="ng-tag">Nigeria</span>
@@ -55,16 +54,6 @@
             <h3>Flash Learners</h3>
             <p>WAEC, JAMB, NECO, and BECE past questions, notes, and study guides.</p>
           </a>
-          <a class="ng-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
-            <span class="ng-tag">Classics</span>
-            <h3>Project Gutenberg</h3>
-            <p>75,000+ public domain books — free EPUB, PDF, and Kindle downloads.</p>
-          </a>
-          <a class="ng-card" href="https://openlibrary.org/" target="_blank" rel="noopener">
-            <span class="ng-tag">Library</span>
-            <h3>Open Library</h3>
-            <p>Millions of books. Read or borrow free from the Internet Archive.</p>
-          </a>
           <a class="ng-card" href="https://archive.org/details/texts" target="_blank" rel="noopener">
             <span class="ng-tag">Archive</span>
             <h3>Internet Archive</h3>
@@ -75,26 +64,20 @@
             <h3>ManyBooks</h3>
             <p>Over 50,000 free e-books across every genre, in EPUB, PDF, and Kindle formats.</p>
           </a>
-          <a class="ng-card" href="https://www.pdfdrive.com/" target="_blank" rel="noopener">
-            <span class="ng-tag">PDF Search</span>
-            <h3>PDF Drive</h3>
-            <p>A search engine for finding PDF files. The closest experience to OceanofPDF, but use with caution.</p>
-          </a>
-          <a class="ng-card" href="https://www.nap.edu/" target="_blank" rel="noopener">
-            <span class="ng-tag">Academic</span>
-            <h3>National Academies Press</h3>
-            <p>Free downloads of PDFs in education, science, medicine, and engineering.</p>
+          <a class="ng-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
+            <span class="ng-tag">Classics</span>
+            <h3>Project Gutenberg</h3>
+            <p>75,000+ public domain books — free EPUB, PDF, and Kindle downloads.</p>
           </a>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p>Built with <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a> and <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>. All books are free and legal to read.</p>
+      <p>Built with <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>, <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>, and <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>.</p>
     </footer>
   `;
 
-  // 2. Inject the CSS (unchanged from your working version)
   const style = document.createElement("style");
   style.textContent = `
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -137,9 +120,8 @@
     .card .author { font-size: 0.85rem; color: #a6adcf; margin-bottom: 0.35rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
     .card .year { font-size: 0.78rem; color: #7c84b0; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
     .card .actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 0.45rem; }
-    .card a, .card button { flex: 1 1 auto; min-width: 84px; text-align: center; padding: 0.55rem 0.6rem; font-size: 0.82rem; font-weight: 700; border-radius: 10px; text-decoration: none; background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%); color: white; white-space: nowrap; box-shadow: 0 6px 16px rgba(124,156,255,0.28); border: none; cursor: pointer; }
-    .card button.secondary { background: transparent; border: 1px solid rgba(124,156,255,0.18); color: #f4f5ff; box-shadow: none; }
-    .card button.secondary:hover { border-color: #7c9cff; background: rgba(124,156,255,0.08); }
+    .card a { flex: 1 1 auto; min-width: 84px; text-align: center; padding: 0.55rem 0.6rem; font-size: 0.82rem; font-weight: 700; border-radius: 10px; text-decoration: none; background: linear-gradient(135deg, #7c9cff 0%, #b58cff 100%); color: white; white-space: nowrap; box-shadow: 0 6px 16px rgba(124,156,255,0.28); }
+    .card a.secondary { background: transparent; border: 1px solid rgba(124,156,255,0.18); color: #f4f5ff; box-shadow: none; }
     .ng-resources { margin: 2rem 0 3rem; padding: 2rem 0 0; border-top: 1px solid rgba(124,156,255,0.18); }
     .ng-resources h2 { font-size: clamp(1.3rem, 3.5vw, 1.75rem); font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff 0%, #9db1ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .ng-intro { color: #a6adcf; margin-bottom: 1.75rem; font-size: 0.95rem; }
@@ -157,7 +139,6 @@
   `;
   document.head.appendChild(style);
 
-  // 3. Logic & Search Functions
   const form = document.getElementById("search-form");
   const input = document.getElementById("search-input");
   const results = document.getElementById("results");
@@ -175,13 +156,15 @@
     results.innerHTML = "";
 
     try {
-      const [ol, gut] = await Promise.allSettled([
+      const [ol, gut, ia] = await Promise.allSettled([
         fetchOpenLibrary(query),
         fetchGutenberg(query),
+        fetchInternetArchive(query),
       ]);
 
       const merged = dedupe([
         ...(gut.status === "fulfilled" ? gut.value : []),
+        ...(ia.status === "fulfilled" ? ia.value : []),
         ...(ol.status === "fulfilled" ? ol.value : []),
       ]);
 
@@ -233,6 +216,24 @@
     });
   }
 
+  // Internet Archive Search — real API, no key needed
+  async function fetchInternetArchive(query) {
+    const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=year&rows=15&output=json`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const docs = data.response?.docs || [];
+    return docs.map((doc) => ({
+      title: doc.title || "Untitled",
+      author: doc.creator || "Unknown author",
+      year: doc.year || "",
+      cover: `https://archive.org/services/img/${doc.identifier}`,
+      readUrl: `https://archive.org/details/${doc.identifier}`,
+      source: "Internet Archive",
+      downloadUrl: null
+    }));
+  }
+
   function dedupe(books) {
     const seen = new Set();
     return books.filter((b) => {
@@ -246,14 +247,10 @@
   function renderBooks(books) {
     results.innerHTML = books.map((book) => {
       const coverHtml = book.cover ? `<img src="${book.cover}" alt="${escapeHtml(book.title)}" loading="lazy" onerror="this.parentElement.textContent='📖'" />` : "📖";
-      
       let actionButtons = `<a href="${book.readUrl}" target="_blank" rel="noopener">Read Free</a>`;
-      
       if (book.downloadUrl) {
-        // For Gutenberg, use a direct link. The browser will handle the download.
         actionButtons += `<a href="${book.downloadUrl}" download class="secondary" target="_blank" rel="noopener">${book.downloadLabel}</a>`;
       }
-
       return `
         <article class="card">
           <div class="cover-img">${coverHtml}</div>
@@ -261,9 +258,7 @@
             <h3>${escapeHtml(book.title)}</h3>
             <p class="author">${escapeHtml(book.author)}</p>
             <p class="year">${book.year ? book.year + " · " : ""}${book.source}</p>
-            <div class="actions">
-              ${actionButtons}
-            </div>
+            <div class="actions">${actionButtons}</div>
           </div>
         </article>
       `;
@@ -271,11 +266,6 @@
   }
 
   function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
 })();
