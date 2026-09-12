@@ -1,23 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Eigen — Find Free Books for Students</title>
-  <meta name="description" content="Eigen is an educational website that supports and encourages easy access to free books for students.">
-  <link rel="stylesheet" href="style.css">
+  <meta
+    name="description"
+    content="Eigen helps students find free books — including Nigerian textbooks, past questions, and public domain classics."
+  />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+  <!-- Animated premium book background -->
+  <div class="bg-scene" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+
+    <div class="book">
+      <div class="book-inner">
+        <div class="page page-left"></div>
+        <div class="page page-right"></div>
+        <div class="cover"></div>
+      </div>
+    </div>
+
+    <div class="floating-pages">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
   <header class="hero">
     <div class="container">
       <h1>📚 Eigen</h1>
-      <p class="tagline">Search millions of free books. Read them anywhere.</p>
+      <p class="tagline">Free books for students — Nigerian textbooks, past questions, and classics.</p>
 
       <form id="search-form" class="search-bar">
         <input
           type="text"
           id="search-input"
-          placeholder="Search by title, author, or subject…"
+          placeholder="Search by title, author, subject, or course code…"
           autocomplete="off"
           required
         />
@@ -25,26 +47,73 @@
       </form>
 
       <p class="hint">
-        Try: "Things Fall Apart", "Jane Austen", or "African history"
+        Try: "Things Fall Apart", "GST201", "WAEC Physics", or "Jane Austen"
       </p>
     </div>
   </header>
 
   <main class="container">
     <div id="status" class="status"></div>
+
+    <!-- Search results -->
     <section id="results" class="results"></section>
+
+    <!-- Nigerian Resources panel -->
+    <section id="ng-resources" class="ng-resources">
+      <h2>🇳🇬 Nigerian Textbook Sources</h2>
+      <p class="ng-intro">
+        Direct links to trusted Nigerian educational resources. All free to access.
+      </p>
+
+      <div class="ng-grid">
+        <a class="ng-card" href="https://nou.edu.ng/courseware/" target="_blank" rel="noopener">
+          <span class="ng-tag">University</span>
+          <h3>NOUN e-Courseware</h3>
+          <p>Full university course materials — GST, Sciences, Arts, Management. PDF downloads.</p>
+        </a>
+
+        <a class="ng-card" href="https://www.nvit.edu.ng/" target="_blank" rel="noopener">
+          <span class="ng-tag">Library</span>
+          <h3>National Virtual Library</h3>
+          <p>Curated Nigerian textbooks, theses, and academic papers aligned to the curriculum.</p>
+        </a>
+
+        <a class="ng-card" href="https://flashlearners.com/" target="_blank" rel="noopener">
+          <span class="ng-tag">Exams</span>
+          <h3>Flash Learners</h3>
+          <p>WAEC, JAMB, NECO, and BECE past questions, notes, and study guides.</p>
+        </a>
+
+        <a class="ng-card" href="https://www.africanstorybook.org/" target="_blank" rel="noopener">
+          <span class="ng-tag">Primary</span>
+          <h3>African Storybook</h3>
+          <p>Free picture storybooks in Yoruba, Igbo, Hausa, and other African languages.</p>
+        </a>
+
+        <a class="ng-card" href="https://lagoshope.org/" target="_blank" rel="noopener">
+          <span class="ng-tag">Primary / JSS</span>
+          <h3>Lagos HOPE e-Learning</h3>
+          <p>Free textbooks for Primary 1–6 and Junior Secondary students, by Lagos State.</p>
+        </a>
+
+        <a class="ng-card" href="https://www.gutenberg.org/" target="_blank" rel="noopener">
+          <span class="ng-tag">Classics</span>
+          <h3>Project Gutenberg</h3>
+          <p>75,000+ public domain books — free EPUB, PDF, and Kindle downloads.</p>
+        </a>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
     <p>
       Built with
-      <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>
-      and
-      <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>.
-      All books are free and legal to read.
+      <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>,
+      <a href="https://www.gutenberg.org" target="_blank" rel="noopener">Project Gutenberg</a>,
+      and Nigerian educational sources. All books are free and legal to read.
     </p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
